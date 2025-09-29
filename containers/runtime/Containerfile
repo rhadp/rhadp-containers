@@ -14,7 +14,7 @@ RUN dnf install -y --setopt=tsflags=nodocs \
     libusb1 \
     qemu-kvm \
     qemu-img \
-    git jq curl \
+    git jq yq curl \
     android-tools && \
     dnf clean all && \
     rm -rf /var/cache/dnf
