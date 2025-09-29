@@ -45,15 +45,15 @@ jobs:
       - name: set image tags
         id: set-tags
         run: |
-          TAGS="${{ env.REGISTRY_ORG }}/${{ matrix.name }}:${{ env.VERSION }}"
+          TAGS="${{ vars.REGISTRY_ORG }}/${{ matrix.name }}:${{ env.VERSION }}"
 
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            TAGS="$TAGS,${{ env.REGISTRY_ORG }}/${{ matrix.name }}:latest"
+            TAGS="$TAGS,${{ vars.REGISTRY_ORG }}/${{ matrix.name }}:latest"
           fi
 
           if [[ "${{ github.ref }}" == refs/heads/release-* ]]; then
             RELEASE_BRANCH_NAME=$(basename "${{ github.ref }}")
-            TAGS="$TAGS,${{ env.REGISTRY_ORG }}/${{ matrix.name }}:${RELEASE_BRANCH_NAME}"
+            TAGS="$TAGS,${{ vars.REGISTRY_ORG }}/${{ matrix.name }}:${RELEASE_BRANCH_NAME}"
           fi
 
           echo "tags=$TAGS" >> $GITHUB_OUTPUT
@@ -72,7 +72,7 @@ jobs:
       - name: login to quay.io
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ${{ vars.REGISTRY }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_TOKEN }}
       
@@ -85,7 +85,7 @@ jobs:
       - id: metadata
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY_ORG }}/${{ matrix.name }}
+          images: ${{ vars.REGISTRY_ORG }}/${{ matrix.name }}
       
       - name: build and push
         id: push
@@ -103,6 +103,6 @@ jobs:
       - name: generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.REGISTRY_ORG }}/${{ matrix.name }}
+          subject-name: ${{ vars.REGISTRY_ORG }}/${{ matrix.name }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
