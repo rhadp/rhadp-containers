@@ -1,4 +1,4 @@
-FROM quay.io/rhadp/builder:latest
+FROM quay.io/mickume/builder:latest
 
 USER root
 
