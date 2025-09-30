@@ -1,8 +1,33 @@
 # Red Hat Automotive Development Platform - Containers
 
-This repository contains container images and Containerfiles for the Red Hat Automotive Development Platform (RHADP). 
+Containers images with tools for developers 👨‍💻👩‍💻 and to run workloads on the Red Hat Automotive Development Platform (RHADP). 
 
-It includes development environment containers for Red Hat Dev Spaces and GitHub Codespaces, runtime environments, and specialized containers for automotive software development workflows within the RHADP ecosystem.
+## Container Images
+
+### Runtime
+A runtime environment with Python, oc, kubectl, and jumpstarter, based on Fedora 42.
+
+### Builder
+A build environment to support application development in CI/CD tools and cloud-based IDEs. 
+Based on the Red Hat Universal Base Image 9 (UBI9) container image.
+
+### Codespaces
+Based on the `Builder` image with additional Red Hat Dev Spaces and GitHub CodeSpaces configuration.
+
+## Building the container images
+
+Run the following command to build the images locally:
+
+```shell
+make build-all
+```
+
+Build on GitHub:
+
+This repo contains [actions](https://github.com/rhadp/rhadp-containers/actions), including:
+* [![release latest container images](https://github.com/rhadp/rhadp-containers/actions/workflows/build-all.yaml/badge.svg)](https://github.com/rhadp/rhadp-containers/actions/workflows/build-all.yaml)
+
+The workflow creates both x86 and ARM64 versions of each container.
 
 ## Contributing
 
