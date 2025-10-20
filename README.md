@@ -27,7 +27,7 @@ Build on GitHub:
 This repo contains [actions](https://github.com/rhadp/rhadp-containers/actions), including:
 * [![release latest container images](https://github.com/rhadp/rhadp-containers/actions/workflows/build-all.yaml/badge.svg)](https://github.com/rhadp/rhadp-containers/actions/workflows/build-all.yaml)
 
-The workflow creates both x86 and ARM64 versions of each container.
+The workflow creates both the X86 and ARM64 versions of each container.
 
 ## Contributing
 

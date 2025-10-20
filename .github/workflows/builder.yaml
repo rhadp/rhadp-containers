@@ -1,4 +1,4 @@
-name: build the base container image
+name: build the runtime container image
 on:
   workflow_dispatch:
   
