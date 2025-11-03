@@ -1,6 +1,6 @@
-# Red Hat Automotive Development Platform - Containers
+# Red Hat Automotive Suite - Containers
 
-Containers images with tools for developers 👨‍💻👩‍💻 and to run workloads on the Red Hat Automotive Development Platform (RHADP). 
+Containers images with tools for developers 👨‍💻👩‍💻 and to run workloads on the Red Hat Automotive Suite (RHAS). 
 
 ## Container Images
 
@@ -35,7 +35,7 @@ Fork the repository and submit a pull request.
 
 ## Development
 
-A list of ideas, open issues etc related to the Red Hat Automotive Development Platform (RHADP) is [here](https://github.com/orgs/rhadp/projects/1).  
+A list of ideas, open issues etc related to the Red Hat Automotive Suite (RHAS) is [here](https://github.com/orgs/rhadp/projects/1).  
 
 Also check the [Issues](https://github.com/rhadp/rhadp-containers/issues) section of the this repository.
 

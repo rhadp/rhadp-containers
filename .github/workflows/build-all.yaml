@@ -79,7 +79,7 @@ jobs:
         with:
           registry: ${{ vars.REGISTRY }}
           username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_TOKEN }}
+          password: ${{ secrets.GH_TOKEN }}
       
       - name: setup qemu
         uses: docker/setup-qemu-action@v3
