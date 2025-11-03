@@ -24,8 +24,8 @@ make build-all
 
 Build on GitHub:
 
-This repo contains [actions](https://github.com/rhadp/rhadp-containers/actions), including:
-* [![release latest container images](https://github.com/rhadp/rhadp-containers/actions/workflows/build-all.yaml/badge.svg)](https://github.com/rhadp/rhadp-containers/actions/workflows/build-all.yaml)
+This repo contains [actions](https://github.com/rhadp/containers/actions), including:
+* [![release latest container images](https://github.com/rhadp/containers/actions/workflows/build-all.yaml/badge.svg)](https://github.com/rhadp/containers/actions/workflows/build-all.yaml)
 
 The workflow creates both the X86 and ARM64 versions of each container.
 
@@ -37,7 +37,7 @@ Fork the repository and submit a pull request.
 
 A list of ideas, open issues etc related to the Red Hat Automotive Suite (RHAS) is [here](https://github.com/orgs/rhadp/projects/1).  
 
-Also check the [Issues](https://github.com/rhadp/rhadp-containers/issues) section of the this repository.
+Also check the [Issues](https://github.com/rhadp/containers/issues) section of the this repository.
 
 ## Disclaimer
 
