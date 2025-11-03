@@ -1,4 +1,4 @@
-# RHADP Container Images Makefile
+# RHAS Container Images Makefile
 # Build container images locally using Podman
 
 # Default registry and namespace

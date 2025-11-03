@@ -10,7 +10,7 @@ ARG TARGETARCH
 LABEL name="rhadp/builder"
 
 # labels for container catalog
-LABEL summary="RHADP devfile universal developer image"
+LABEL summary="RHAS devfile universal developer image"
 LABEL description="Automotive developer image with automotive developers tools."
 LABEL io.k8s.display-name="rhadp/builder"
 
