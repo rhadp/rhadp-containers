@@ -12,6 +12,8 @@ RUN dnf install -y --setopt=tsflags=nodocs \
     nss_wrapper \
     qemu-kvm \
     qemu-img \
+    golang-oras kmod \
+    openssh-clients nc \
     git jq yq curl wget && \
     dnf clean all && \
     rm -rf /var/cache/dnf
