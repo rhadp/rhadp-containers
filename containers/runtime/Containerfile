@@ -12,9 +12,15 @@ RUN dnf install -y --setopt=tsflags=nodocs \
     nss_wrapper \
     qemu-kvm \
     qemu-img \
-    golang-oras kmod \
-    openssh-clients nc \
-    git jq yq curl wget && \
+    golang-oras \
+    kmod \
+    openssh-clients \
+    nc \
+    git \
+    jq \
+    yq \
+    curl \
+    wget && \
     dnf clean all && \
     rm -rf /var/cache/dnf
 
@@ -22,7 +28,7 @@ RUN dnf install -y --setopt=tsflags=nodocs \
 RUN mkdir -p /home/user
 
 # oc client
-ENV OC_VERSION=4.19
+ENV OC_VERSION=4.20
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
         curl -L https://mirror.openshift.com/pub/openshift-v4/arm64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz; \
     else \
@@ -32,7 +38,7 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
   
 ## kubectl
 ENV KUBECONFIG=/home/user/.kube/config
-ENV K8S_VERSION=1.32
+ENV K8S_VERSION=1.33
 RUN <<EOF
 set -euf -o pipefail
 

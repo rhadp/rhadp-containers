@@ -101,7 +101,7 @@ RUN mkdir -p /home/tooling/.config/pip && \
 
 
 # oc client
-ENV OC_VERSION=4.19
+ENV OC_VERSION=4.20
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
         curl -L https://mirror.openshift.com/pub/openshift-v4/arm64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz; \
     else \
@@ -116,7 +116,7 @@ RUN echo 'alias docker=podman' >> ${PROFILE_EXT}
 COPY --chown=0:0 containers.conf /etc/containers/containers.conf
 
 ## kubectl
-ENV K8S_VERSION=1.32
+ENV K8S_VERSION=1.33
 RUN <<EOF
 set -euf -o pipefail
 

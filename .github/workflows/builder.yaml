@@ -1,4 +1,4 @@
-name: build the runtime container image
+name: build the builder container image
 on:
   workflow_dispatch:
   
@@ -69,7 +69,7 @@ jobs:
               }
             }
 
-      - name: login to quay.io
+      - name: login to registry
         uses: docker/login-action@v3
         with:
           registry: ${{ vars.REGISTRY }}
