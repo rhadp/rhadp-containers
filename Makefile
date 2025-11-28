@@ -6,6 +6,7 @@ REGISTRY ?= localhost
 NAMESPACE ?= rhadp
 
 # Image names and tags
+BASE_IMAGE = $(REGISTRY)/$(NAMESPACE)/base
 BUILDER_IMAGE = $(REGISTRY)/$(NAMESPACE)/builder
 RUNTIME_IMAGE = $(REGISTRY)/$(NAMESPACE)/runtime
 CODESPACES_IMAGE = $(REGISTRY)/$(NAMESPACE)/codespaces
@@ -20,8 +21,17 @@ BUILD_ARGS ?= --build-arg TARGETARCH=$(shell uname -m | sed 's/x86_64/amd64/')
 .PHONY: help all build-all builder runtime codespaces clean clean-all push-all
 
 # Build all images
-build-all: builder runtime codespaces
+build-all: base builder runtime codespaces
 	@echo "✅ All images built successfully!"
+
+# Build the base image
+base:
+	@echo "🔨 Building base image..."
+	$(CONTAINER_TOOL) build $(BUILD_ARGS) \
+		-f containers/base/Containerfile \
+		-t $(BASE_IMAGE):$(TAG) \
+		containers/base/
+	@echo "✅ Base image built: $(BASE_IMAGE):$(TAG)"
 
 # Build the builder image
 builder:

@@ -7,17 +7,13 @@ ARG TARGETARCH
 USER root
 
 RUN dnf install -y --setopt=tsflags=nodocs \
-    python3.12 \
-    python3.12-devel \
-    python3-pip \
-    nss_wrapper \
-    golang-oras \
-    kmod \
-    openssh-clients \
-    nc \
-    git && \
-    dnf clean all && \
-    rm -rf /var/cache/dnf
+    https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
+    dnf install -y --setopt=tsflags=nodocs \
+    python3.12 python3.12-devel python3-pip \
+    git jq yq \
+    nss_wrapper kmod openssh-clients nc stow \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf
 
 # create default directories
 RUN mkdir -p /home/user/.config/pip && \
