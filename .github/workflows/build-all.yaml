@@ -17,8 +17,9 @@ jobs:
       max-parallel: 1
       matrix:
         container:
-          - runtime
-          - builder
+          - base
+          #- runtime
+          #- builder
           - codespaces
     
     permissions:

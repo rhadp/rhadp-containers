@@ -1,4 +1,4 @@
-name: build the runtime container image
+name: build the base container image
 on:
   workflow_dispatch:
   
@@ -7,12 +7,12 @@ on:
       - 'develop'
 
 jobs:
-  build-runtime-container:
+  build-base-container:
     strategy:
       matrix:
         include:
           - runs-on: ubuntu-latest
-            name: runtime
+            name: base
 
     runs-on: ${{ matrix.runs-on }}
     

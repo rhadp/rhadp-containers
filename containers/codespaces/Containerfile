@@ -1,9 +1,9 @@
-FROM ghcr.io/rhadp/builder:latest
+FROM ghcr.io/rhadp/base:latest
 
 USER root
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv  /bin/uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uvx /bin/uvx
+#COPY --from=ghcr.io/astral-sh/uv:latest /uv  /bin/uv
+#COPY --from=ghcr.io/astral-sh/uv:latest /uvx /bin/uvx
 
 # set the virtual environment for jumpstarter etc
 ENV UV_PYTHON=python3.12 VIRTUAL_ENV=/venv
