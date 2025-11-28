@@ -18,7 +18,7 @@ jobs:
       matrix:
         container:
           - base
-          #- runtime
+          - runtime
           #- builder
           - codespaces
     

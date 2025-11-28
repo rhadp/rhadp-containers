@@ -1,66 +1,24 @@
-FROM fedora:42
+FROM ghcr.io/rhadp/base:latest
 
 ARG TARGETARCH
-
 USER root
 
 RUN dnf install -y --setopt=tsflags=nodocs \
-    python3.12 \
-    python3.12-devel \
-    python3-pip \
-    python3-libgpiod \
-    nss_wrapper \
-    qemu-kvm \
-    qemu-img \
-    golang-oras \
-    kmod \
-    openssh-clients \
-    nc \
-    git \
-    jq \
-    yq \
-    curl \
-    wget && \
-    dnf clean all && \
-    rm -rf /var/cache/dnf
-
-# install some basic tools
-RUN mkdir -p /home/user
-
-# oc client
-ENV OC_VERSION=4.20
-RUN if [ "$TARGETARCH" = "arm64" ]; then \
-        curl -L https://mirror.openshift.com/pub/openshift-v4/arm64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz; \
+    https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+        dnf install -y --setopt=tsflags=nodocs \
+        https://mirror.stream.centos.org/9-stream/BaseOS/aarch64/os/Packages/centos-stream-repos-9.0-26.el9.noarch.rpm \
+        https://mirror.stream.centos.org/9-stream/BaseOS/aarch64/os/Packages/centos-gpg-keys-9.0-26.el9.noarch.rpm; \
     else \
-        curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz; \
-    fi | tar -C /usr/local/bin -xz --no-same-owner && \
-    chmod +x /usr/local/bin/oc
-  
-## kubectl
-ENV KUBECONFIG=/home/user/.kube/config
-ENV K8S_VERSION=1.33
-RUN <<EOF
-set -euf -o pipefail
-
-cat <<EOF2 > /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://pkgs.k8s.io/core:/stable:/v${K8S_VERSION}/rpm/
-enabled=1
-gpgcheck=1
-gpgkey=https://pkgs.k8s.io/core:/stable:/v${K8S_VERSION}/rpm/repodata/repomd.xml.key
-EOF2
-
-dnf install --setopt=tsflags=nodocs -y kubectl
-curl -sSL -o ~/.kubectl_aliases https://raw.githubusercontent.com/ahmetb/kubectl-alias/master/.kubectl_aliases
-EOF
-
-# python dependencies
-COPY --from=ghcr.io/astral-sh/uv:latest /uv  /bin/uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uvx /bin/uvx
-
-# set the virtual environment for jumpstarter etc
-ENV UV_PYTHON=python3.12 VIRTUAL_ENV=/venv
+        dnf install -y --setopt=tsflags=nodocs \
+        https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/Packages/centos-stream-repos-9.0-26.el9.noarch.rpm \
+        https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-9.0-26.el9.noarch.rpm; \
+    fi && \
+    dnf install -y --setopt=tsflags=nodocs \
+    python3-libgpiod \
+    qemu-kvm qemu-img \
+    && dnf -y clean all --enablerepo='*' \
+    && rm -rf /var/cache/dnf
 
 # install jumpstarter and other python dependencies
 COPY requirements.txt /tmp/requirements.txt
@@ -69,16 +27,9 @@ RUN uv venv /venv && \
     uv pip install -r /tmp/requirements.txt && \
     rm -rf /tmp/requirements.txt
 
-ENV PATH="/venv/bin:$PATH"
-
 # create directories and set permissions
 RUN mkdir -p /etc/jumpstarter/exporters && \ 
     mkdir -p /home/user/.config/jumpstarter/clients/ && \
     chgrp -R 0 /home/user && chmod -R g=u /home/user
 
 USER 10001
-
-# This will make sure that we always run python from our venv instead
-RUN echo "alias python='uv run python'" >> /home/user/.bashrc
-
-ENV HOME=/home/user
