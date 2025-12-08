@@ -19,8 +19,9 @@ RUN dnf install -y --setopt=tsflags=nodocs \
 RUN mkdir -p /home/user/.config/pip && \
     mkdir -p /home/user/.config/containers && \
     mkdir -p /home/user/.cache && \
+    mkdir -p /home/user/.ssh && \
     mkdir -p /home/workspace/.scripts/init && \
-    mkdir -p /home/user/.ssh
+    mkdir -p /home/workspace/.config/go
 
 # oc client
 ENV OC_VERSION=4.20
