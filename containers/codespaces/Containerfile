@@ -14,9 +14,8 @@ RUN uv venv /venv && \
 
 ENV PATH="/venv/bin:$PATH"
 
-# init workspace
-COPY init-jumpstarter ${INIT_SCRIPTS_DIR}/init-jumpstarter
-COPY init-git ${INIT_SCRIPTS_DIR}/init-git
+# init workspace script
+COPY init-workspace ${INIT_SCRIPTS_DIR}/init-workspace
 
 RUN mkdir -p /home/user/.config/jumpstarter/clients/ && \
     chmod +x ${INIT_SCRIPTS_DIR}/*
