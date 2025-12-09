@@ -15,7 +15,7 @@ config:
   current-client: default
 EOF
 
-CLIENT_NAME="$USER_NAME-default"
+CLIENT_NAME="${USER_NAME/@/-}-default"
 if oc get client "$CLIENT_NAME" -n $NAMESPACE &>/dev/null; then
   oc delete client "$CLIENT_NAME" -n $NAMESPACE || true
 fi
