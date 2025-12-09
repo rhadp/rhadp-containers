@@ -1,0 +1,17 @@
+FROM ghcr.io/rhadp/runtime:latest
+
+ARG TARGETARCH
+USER root
+
+# install additionalpython dependencies
+COPY requirements.txt /tmp/requirements.txt
+RUN uv pip install -r /tmp/requirements.txt && \
+    rm -rf /tmp/requirements.txt
+
+# copy the python scripts
+COPY s3-upload.py /home/user/s3-upload.py
+
+# set permissions
+RUN chgrp -R 0 /home/user && chmod -R g=u /home/user
+
+USER 10001

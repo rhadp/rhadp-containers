@@ -9,6 +9,7 @@ NAMESPACE ?= rhadp
 BASE_IMAGE = $(REGISTRY)/$(NAMESPACE)/base
 BUILDER_IMAGE = $(REGISTRY)/$(NAMESPACE)/builder
 RUNTIME_IMAGE = $(REGISTRY)/$(NAMESPACE)/runtime
+PIPELINE_IMAGE = $(REGISTRY)/$(NAMESPACE)/pipeline
 CODESPACES_IMAGE = $(REGISTRY)/$(NAMESPACE)/codespaces
 TAG ?= latest
 
@@ -18,10 +19,10 @@ CONTAINER_TOOL ?= podman
 # Build arguments
 BUILD_ARGS ?= --build-arg TARGETARCH=$(shell uname -m | sed 's/x86_64/amd64/')
 
-.PHONY: help all build-all builder runtime codespaces clean clean-all push-all
+.PHONY: help all build-all base builder runtime pipeline codespaces clean clean-all push-all
 
 # Build all images
-build-all: base builder runtime codespaces
+build-all: base builder runtime pipeline codespaces
 	@echo "✅ All images built successfully!"
 
 # Build the base image
@@ -50,6 +51,15 @@ runtime:
 		-t $(RUNTIME_IMAGE):$(TAG) \
 		containers/runtime/
 	@echo "✅ Runtime image built: $(RUNTIME_IMAGE):$(TAG)"
+
+# Build the pipeline image
+pipeline:
+	@echo "🔨 Building pipeline image..."
+	$(CONTAINER_TOOL) build $(BUILD_ARGS) \
+		-f containers/pipeline/Containerfile \
+		-t $(PIPELINE_IMAGE):$(TAG) \
+		containers/pipeline/
+	@echo "✅ Pipeline image built: $(PIPELINE_IMAGE):$(TAG)"
 
 # Build the codespaces image (depends on builder)
 codespaces: builder
