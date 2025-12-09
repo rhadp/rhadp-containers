@@ -7,11 +7,11 @@ config:
 EOF
 
 # generate jumpstarter client config
-cat > /home/user/.config/jumpstarter/clients/default.yaml <<EOF
+cat > /home/user/.config/jumpstarter/clients/default_old.yaml <<EOF
 apiVersion: jumpstarter.dev/v1alpha1
 kind: ClientConfig
 metadata:
-  namespace: jumpstarter-qemu-exporter
+  namespace: auto-jumpstarter
   name: $(sed "s|-devspaces||" /run/secrets/kubernetes.io/serviceaccount/namespace)
 endpoint: $JUMPSTARTER_GRPC_ENDPOINT
 tls:
@@ -22,3 +22,6 @@ drivers:
   allow: []
   unsafe: true
 EOF
+
+# generate jumpstarter client config
+jmp admin create client --insecure-tls-config --nointeractive -n auto-jumpstarter --out /home/user/.config/jumpstarter/clients/default.yaml default

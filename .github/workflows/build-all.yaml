@@ -19,6 +19,7 @@ jobs:
         container:
           - base
           - runtime
+          - builder
           - pipeline
           - codespaces
     

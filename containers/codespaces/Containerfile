@@ -1,9 +1,6 @@
-FROM ghcr.io/rhadp/base:latest
+FROM ghcr.io/rhadp/builder:latest
 
 USER root
-
-#COPY --from=ghcr.io/astral-sh/uv:latest /uv  /bin/uv
-#COPY --from=ghcr.io/astral-sh/uv:latest /uvx /bin/uvx
 
 # set the virtual environment for jumpstarter etc
 ENV UV_PYTHON=python3.12 VIRTUAL_ENV=/venv
@@ -17,7 +14,7 @@ RUN uv venv /venv && \
 
 ENV PATH="/venv/bin:$PATH"
 
-# init builder and jumpstarter config
+# init workspace
 COPY init-jumpstarter ${INIT_SCRIPTS_DIR}/init-jumpstarter
 COPY init-git ${INIT_SCRIPTS_DIR}/init-git
 
