@@ -19,7 +19,7 @@ ENV PATH="/venv/bin:$PATH"
 
 # init builder and jumpstarter config
 COPY init-jumpstarter ${INIT_SCRIPTS_DIR}/init-jumpstarter
-COPY init-builder ${INIT_SCRIPTS_DIR}/init-builder
+COPY init-git ${INIT_SCRIPTS_DIR}/init-git
 
 RUN mkdir -p /home/user/.config/jumpstarter/clients/ && \
     chmod +x ${INIT_SCRIPTS_DIR}/*
