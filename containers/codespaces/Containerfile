@@ -20,9 +20,14 @@ COPY init-git ${INIT_SCRIPTS_DIR}/init-git
 RUN mkdir -p /home/user/.config/jumpstarter/clients/ && \
     chmod +x ${INIT_SCRIPTS_DIR}/*
 
-# set permissions on the user's home directory
-RUN chgrp -R 0 /home/user && chmod -R g=u /home/user
+# create symbolic links from /home/workspace/ -> /home/user/
+RUN stow . -t /home/user/ -d /home/workspace/ --no-folding
 
+# set permissions on the user's home directory
+#UN chgrp -R 0 /home/user && chmod -R g=u /home/user
+RUN chown -R 10001:0 /home/workspace /home/user && \
+    chmod -R g=u /home/user /home/workspace
+    
 USER 10001
 
 # This will make sure that we always run python from our venv instead
