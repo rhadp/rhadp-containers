@@ -3,20 +3,23 @@ FROM ghcr.io/rhadp/base:latest
 ARG TARGETARCH
 USER root
 
+ENV CENTOS_RELEASE=9.0-30
 RUN dnf install -y --setopt=tsflags=nodocs \
     https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
     if [ "$TARGETARCH" = "arm64" ]; then \
         dnf install -y --setopt=tsflags=nodocs \
-        https://mirror.stream.centos.org/9-stream/BaseOS/aarch64/os/Packages/centos-stream-repos-9.0-26.el9.noarch.rpm \
-        https://mirror.stream.centos.org/9-stream/BaseOS/aarch64/os/Packages/centos-gpg-keys-9.0-26.el9.noarch.rpm; \
+        https://mirror.stream.centos.org/9-stream/BaseOS/aarch64/os/Packages/centos-stream-repos-${CENTOS_RELEASE}.el9.noarch.rpm \
+        https://mirror.stream.centos.org/9-stream/BaseOS/aarch64/os/Packages/centos-gpg-keys-${CENTOS_RELEASE}.el9.noarch.rpm; \
     else \
         dnf install -y --setopt=tsflags=nodocs \
-        https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/Packages/centos-stream-repos-9.0-26.el9.noarch.rpm \
-        https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-9.0-26.el9.noarch.rpm; \
+        https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/Packages/centos-stream-repos-${CENTOS_RELEASE}.el9.noarch.rpm \
+        https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-${CENTOS_RELEASE}.el9.noarch.rpm; \
     fi && \
     dnf install -y --setopt=tsflags=nodocs \
-    python3-libgpiod \
-    qemu-kvm qemu-img \
+    python3-libgpiod nss_wrapper \
+    qemu-kvm qemu-img libvirt \
+    "@virtualization-hypervisor" "@virtualization-client" "@virtualization-platform" "@virtualization-tools" \
+    virt-install virt-viewer \
     && dnf -y clean all --enablerepo='*' \
     && rm -rf /var/cache/dnf
 
