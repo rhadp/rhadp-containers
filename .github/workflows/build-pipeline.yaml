@@ -12,3 +12,8 @@ jobs:
     with:
       container_name: pipeline
     secrets: inherit
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+      attestations: write

@@ -16,6 +16,11 @@ jobs:
     with:
       container_name: base
     secrets: inherit
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+      attestations: write
 
   build-builder:
     name: "building 'builder'"
@@ -24,6 +29,11 @@ jobs:
     with:
       container_name: builder
     secrets: inherit
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+      attestations: write
 
   build-runtime:
     name: "building 'runtime'"
@@ -32,6 +42,11 @@ jobs:
     with:
       container_name: runtime
     secrets: inherit
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+      attestations: write
 
   build-codespaces:
     name: "building 'codespaces'"
@@ -40,6 +55,11 @@ jobs:
     with:
       container_name: codespaces
     secrets: inherit
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+      attestations: write
 
   build-pipeline:
     name: "building 'pipeline'"
@@ -48,3 +68,8 @@ jobs:
     with:
       container_name: pipeline
     secrets: inherit
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+      attestations: write
