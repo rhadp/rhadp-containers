@@ -2,9 +2,9 @@ name: "build the pipeline/tekton container image"
 on:
   workflow_dispatch:
   
-  push:
-    branches:
-      - 'develop'
+  #push:
+  #  branches:
+  #    - 'develop'
 
 jobs:
   build-pipeline-container:

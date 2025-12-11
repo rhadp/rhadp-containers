@@ -18,6 +18,7 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
     qemu-kvm qemu-img libvirt \
     "@virtualization-hypervisor" "@virtualization-client" "@virtualization-platform" "@virtualization-tools" \
     virt-install virt-viewer \
+    genisoimage \
     && dnf -y clean all --enablerepo='*' \
     && rm -rf /var/cache/dnf
 
