@@ -3,7 +3,7 @@ FROM ghcr.io/rhadp/runtime:latest
 ARG TARGETARCH
 USER root
 
-# install additionalpython dependencies
+# install additional python dependencies
 COPY requirements.txt /tmp/requirements.txt
 RUN uv pip install -r /tmp/requirements.txt && \
     rm -rf /tmp/requirements.txt

@@ -1,7 +1,6 @@
 # this is a modified version of https://github.com/devfile/cloud-dev-images/blob/main/ubi9/Dockerfile
 
 FROM registry.access.redhat.com/ubi9/ubi:9.7 
-# latest is: -1764163501
 
 ARG TARGETARCH
 USER root
@@ -26,10 +25,10 @@ RUN mkdir -p /home/user/.config/pip && \
 # oc client
 ENV OC_VERSION=4.20
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
-        curl -L https://mirror.openshift.com/pub/openshift-v4/arm64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz; \
+        curl -L https://mirror.openshift.com/pub/openshift-v4/arm64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz | tar -C /usr/local/bin -xz --no-same-owner; \
     else \
-        curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz; \
-    fi | tar -C /usr/local/bin -xz --no-same-owner && \
+        curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz | tar -C /usr/local/bin -xz --no-same-owner; \
+    fi && \
     chmod +x /usr/local/bin/oc
 
     # python dependencies
@@ -61,9 +60,6 @@ RUN stow . -t /home/user/ -d /home/workspace/ --no-folding
 
 # set permissions on /etc/passwd, /etc/group, /etc/pki and /home to allow arbitrary users to write
 RUN chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home /etc/pki
-
-# set permissions on the user's home directory
-RUN chgrp -R 0 /home && chmod -R g=u /home
 
 # Set SHELL to configure the default shell used in web terminals
 # https://github.com/eclipse/che/issues/22524

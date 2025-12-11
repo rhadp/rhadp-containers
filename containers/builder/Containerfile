@@ -11,13 +11,17 @@ RUN dnf install -y --setopt=tsflags=nodocs \
     autoconf patch lsof redhat-rpm-config \
     openssl-devel libcurl-devel libxml2-devel libxslt-devel zlib-devel \
     unzip wget bzip2 zip \
-    podman
+    podman && \
+    dnf -y clean all --enablerepo='*' && \
+    rm -rf /var/cache/dnf
 
 # c/c++ and stuff
-RUN dnf install -y --setopt=tsflags=nodocs \ 
+RUN dnf install -y --setopt=tsflags=nodocs \
     llvm-toolset \
     gcc gcc-c++ clang clang-libs clang-tools-extra \
-    gdb cmake automake autoconf make
+    gdb cmake automake autoconf make && \
+    dnf -y clean all --enablerepo='*' && \
+    rm -rf /var/cache/dnf
 
 # rust
 ENV CARGO_HOME=/home/workspace/.cargo \
@@ -40,6 +44,12 @@ COPY --chown=0:0 containers.conf /etc/containers/containers.conf
 
 # create symbolic links from /home/workspace/ -> /home/user/
 RUN stow . -t /home/user/ -d /home/workspace/ --no-folding
+
+# create directories needed by podman and other tools
+RUN mkdir -p /home/user/.config \
+             /home/user/.local/share/containers \
+             /home/user/.local/share/containers/storage && \
+    chown -R 10001:0 /home/user/.config /home/user/.local
 
 # set permissions on the user's home directory
 RUN chgrp -R 0 /home/user && chmod -R g=u /home/user

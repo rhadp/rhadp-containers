@@ -2,17 +2,11 @@ FROM ghcr.io/rhadp/builder:latest
 
 USER root
 
-# set the virtual environment for jumpstarter etc
-ENV UV_PYTHON=python3.12 VIRTUAL_ENV=/venv
-
 # install jumpstarter and other python dependencies
 COPY requirements.txt /tmp/requirements.txt
-RUN uv venv /venv && \
-    uv pip install "git+https://github.com/jumpstarter-dev/jumpstarter#subdirectory=packages/jumpstarter-all" && \
+RUN uv pip install "git+https://github.com/jumpstarter-dev/jumpstarter#subdirectory=packages/jumpstarter-all" && \
     uv pip install -r /tmp/requirements.txt && \
     rm -rf /tmp/requirements.txt
-
-ENV PATH="/venv/bin:$PATH"
 
 # init scripts
 COPY init-git ${INIT_SCRIPTS_DIR}/init-git
@@ -24,11 +18,7 @@ RUN mkdir -p /home/user/.config/jumpstarter/clients/ && \
 RUN stow . -t /home/user/ -d /home/workspace/ --no-folding
 
 # set permissions on the user's home directory
-#UN chgrp -R 0 /home/user && chmod -R g=u /home/user
 RUN chown -R 10001:0 /home/workspace /home/user && \
     chmod -R g=u /home/user /home/workspace
-    
-USER 10001
 
-# This will make sure that we always run python from our venv instead
-RUN echo "alias python='uv run python'" >> /home/user/.bashrc
+USER 10001

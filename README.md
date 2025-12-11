@@ -22,6 +22,14 @@ Run the following command to build the images locally:
 make build-all
 ```
 
+Build Chain Structure
+
+  base (ubi9)
+  ├── builder
+  │   └── codespaces
+  └── runtime
+      └── pipeline
+
 Build on GitHub:
 
 This repo contains [actions](https://github.com/rhadp/containers/actions), including:
