@@ -66,7 +66,6 @@ jobs:
         with:
           daemon-config: |
             {
-              "debug": true,
               "features": {
                 "containerd-snapshotter": true
               }
@@ -99,8 +98,10 @@ jobs:
           tags: ${{ steps.set-tags.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: |
+            type=gha,scope=${{ github.ref_name }}
+            type=gha,scope=main
+          cache-to: type=gha,mode=max,scope=${{ github.ref_name }}
           push: true
 
       - name: generate artifact attestation
@@ -167,7 +168,6 @@ jobs:
         with:
           daemon-config: |
             {
-              "debug": true,
               "features": {
                 "containerd-snapshotter": true
               }
@@ -200,8 +200,10 @@ jobs:
           tags: ${{ steps.set-tags.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: |
+            type=gha,scope=${{ github.ref_name }}
+            type=gha,scope=main
+          cache-to: type=gha,mode=max,scope=${{ github.ref_name }}
           push: true
 
       - name: generate artifact attestation
@@ -269,7 +271,6 @@ jobs:
         with:
           daemon-config: |
             {
-              "debug": true,
               "features": {
                 "containerd-snapshotter": true
               }
@@ -302,8 +303,10 @@ jobs:
           tags: ${{ steps.set-tags.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: |
+            type=gha,scope=${{ github.ref_name }}
+            type=gha,scope=main
+          cache-to: type=gha,mode=max,scope=${{ github.ref_name }}
           push: true
 
       - name: generate artifact attestation
@@ -370,7 +373,6 @@ jobs:
         with:
           daemon-config: |
             {
-              "debug": true,
               "features": {
                 "containerd-snapshotter": true
               }
@@ -403,8 +405,10 @@ jobs:
           tags: ${{ steps.set-tags.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: |
+            type=gha,scope=${{ github.ref_name }}
+            type=gha,scope=main
+          cache-to: type=gha,mode=max,scope=${{ github.ref_name }}
           push: true
 
       - name: generate artifact attestation
@@ -471,7 +475,6 @@ jobs:
         with:
           daemon-config: |
             {
-              "debug": true,
               "features": {
                 "containerd-snapshotter": true
               }
@@ -504,8 +507,10 @@ jobs:
           tags: ${{ steps.set-tags.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: |
+            type=gha,scope=${{ github.ref_name }}
+            type=gha,scope=main
+          cache-to: type=gha,mode=max,scope=${{ github.ref_name }}
           push: true
 
       - name: generate artifact attestation
