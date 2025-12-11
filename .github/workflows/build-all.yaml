@@ -1,0 +1,50 @@
+name: build all container images
+on:
+  workflow_dispatch:
+
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build-base:
+    name: "building 'base'"
+    uses: ./.github/workflows/build-container.yaml
+    with:
+      container_name: base
+    secrets: inherit
+
+  build-builder:
+    name: "building 'builder'"
+    needs: [build-base]
+    uses: ./.github/workflows/build-container.yaml
+    with:
+      container_name: builder
+    secrets: inherit
+
+  build-runtime:
+    name: "building 'runtime'"
+    needs: [build-base]
+    uses: ./.github/workflows/build-container.yaml
+    with:
+      container_name: runtime
+    secrets: inherit
+
+  build-codespaces:
+    name: "building 'codespaces'"
+    needs: [build-builder]
+    uses: ./.github/workflows/build-container.yaml
+    with:
+      container_name: codespaces
+    secrets: inherit
+
+  build-pipeline:
+    name: "building 'pipeline'"
+    needs: [build-runtime]
+    uses: ./.github/workflows/build-container.yaml
+    with:
+      container_name: pipeline
+    secrets: inherit

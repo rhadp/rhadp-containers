@@ -1,0 +1,14 @@
+name: build the base container image
+on:
+  workflow_dispatch:
+
+  #push:
+  #  branches:
+  #    - 'develop'
+
+jobs:
+  build-base-container:
+    uses: ./.github/workflows/build-container.yaml
+    with:
+      container_name: base
+    secrets: inherit
