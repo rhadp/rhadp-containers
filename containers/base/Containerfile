@@ -27,17 +27,15 @@ RUN dnf install -y --setopt=tsflags=nodocs \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 
-# create default directories
-RUN mkdir -p /home/user/.config/pip && \
-    mkdir -p /home/user/.config/containers && \
-    mkdir -p /home/user/.cache && \
-    mkdir -p /home/user/.ssh && \
-    mkdir -p /home/workspace/.scripts/init && \
-    mkdir -p /home/workspace/.config/go
-
-# oc client
+# create default directories and install oc client in a single layer
 ENV OC_VERSION=4.20
-RUN if [ "$TARGETARCH" = "arm64" ]; then \
+RUN mkdir -p /home/user/.config/pip \
+             /home/user/.config/containers \
+             /home/user/.cache \
+             /home/user/.ssh \
+             /home/workspace/.scripts/init \
+             /home/workspace/.config/go && \
+    if [ "$TARGETARCH" = "arm64" ]; then \
         curl -L https://mirror.openshift.com/pub/openshift-v4/arm64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz | tar -C /usr/local/bin -xz --no-same-owner; \
     else \
         curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz | tar -C /usr/local/bin -xz --no-same-owner; \
@@ -57,29 +55,18 @@ RUN uv venv /venv && \
     uv pip install -r /tmp/requirements.txt && \
     rm -rf /tmp/requirements.txt
 
-# This will make sure that we always run python from our venv instead
-RUN echo "alias python='uv run python'" >> /home/user/.bashrc
-ENV PATH="/venv/bin:$PATH"
-
-# add init-workspace script
-ENV SCRIPTS_DIR=/home/workspace/.scripts \
-    INIT_SCRIPTS_DIR=/home/workspace/.scripts/init
+# add init-workspace script and set up environment in a single layer
+ENV PATH="/venv/bin:$PATH" \
+    SCRIPTS_DIR=/home/workspace/.scripts \
+    INIT_SCRIPTS_DIR=/home/workspace/.scripts/init \
+    SHELL=/usr/bin/bash
 
 COPY init-workspace ${SCRIPTS_DIR}/init-workspace
-RUN chmod +x ${SCRIPTS_DIR}/init-workspace
 
-# create symbolic links from /home/workspace/ -> /home/user/
-RUN stow . -t /home/user/ -d /home/workspace/ --no-folding
-
-# set permissions on /etc/passwd, /etc/group, /etc/pki and /home to allow arbitrary users to write
-RUN chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home /etc/pki
-
-# Set SHELL to configure the default shell used in web terminals
-# https://github.com/eclipse/che/issues/22524
-ENV SHELL=/usr/bin/bash
-
-# cleanup dnf cache
-RUN dnf -y clean all --enablerepo='*'
+RUN echo "alias python='uv run python'" >> /home/user/.bashrc && \
+    chmod +x ${SCRIPTS_DIR}/init-workspace && \
+    stow . -t /home/user/ -d /home/workspace/ --no-folding && \
+    chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home /etc/pki
 
 # Set HOME. Required for CRI-o to set /etc/passwd correctly and in general for other CLI tools
 ENV HOME=/home/user

@@ -6,17 +6,12 @@ USER root
 ENV PROFILE_EXT=/etc/profile.d/udi_environment.sh
 RUN touch ${PROFILE_EXT} && chown 10001 ${PROFILE_EXT}
 
-# misc development packages and stuff
+# install all development packages in a single layer
 RUN dnf install -y --setopt=tsflags=nodocs \
     autoconf patch lsof redhat-rpm-config \
     openssl-devel libcurl-devel libxml2-devel libxslt-devel zlib-devel \
     unzip wget bzip2 zip \
-    podman && \
-    dnf -y clean all --enablerepo='*' && \
-    rm -rf /var/cache/dnf
-
-# c/c++ and stuff
-RUN dnf install -y --setopt=tsflags=nodocs \
+    podman \
     llvm-toolset \
     gcc gcc-c++ clang clang-libs clang-tools-extra \
     gdb cmake automake autoconf make && \
@@ -42,16 +37,12 @@ RUN echo 'alias docker=podman' >> ${PROFILE_EXT}
 # configure container engine
 COPY --chown=0:0 containers.conf /etc/containers/containers.conf
 
-# create symbolic links from /home/workspace/ -> /home/user/
-RUN stow . -t /home/user/ -d /home/workspace/ --no-folding
-
-# create directories needed by podman and other tools
-RUN mkdir -p /home/user/.config \
+# create symbolic links, directories, and set all permissions in a single layer
+RUN stow . -t /home/user/ -d /home/workspace/ --no-folding && \
+    mkdir -p /home/user/.config \
              /home/user/.local/share/containers \
              /home/user/.local/share/containers/storage && \
-    chown -R 10001:0 /home/user/.config /home/user/.local
-
-# set permissions on the user's home directory
-RUN chgrp -R 0 /home/user && chmod -R g=u /home/user
+    chown -R 10001:0 /home/user/.config /home/user/.local && \
+    chgrp -R 0 /home/user && chmod -R g=u /home/user
 
 USER 10001

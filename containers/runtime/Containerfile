@@ -13,14 +13,12 @@ RUN dnf install -y --setopt=tsflags=nodocs \
     && dnf -y clean all --enablerepo='*' \
     && rm -rf /var/cache/dnf
 
-# install jumpstarter and other python dependencies
+# install jumpstarter, create directories, and set permissions in a single layer
 COPY requirements.txt /tmp/requirements.txt
 RUN uv pip install "git+https://github.com/rhadp/jumpstarter@develop#subdirectory=packages/jumpstarter-all" && \
     uv pip install -r /tmp/requirements.txt && \
-    rm -rf /tmp/requirements.txt
-
-# create directories and set permissions
-RUN mkdir -p /etc/jumpstarter/exporters && \ 
+    rm -rf /tmp/requirements.txt && \
+    mkdir -p /etc/jumpstarter/exporters && \
     mkdir -p /home/user/.config/jumpstarter/clients/ && \
     chgrp -R 0 /home/user && chmod -R g=u /home/user
 

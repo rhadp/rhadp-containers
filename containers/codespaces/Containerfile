@@ -8,17 +8,13 @@ RUN uv pip install "git+https://github.com/rhadp/jumpstarter@develop#subdirector
     uv pip install -r /tmp/requirements.txt && \
     rm -rf /tmp/requirements.txt
 
-# init scripts
+# init scripts, create directories, and set permissions in a single layer
 COPY init-git ${INIT_SCRIPTS_DIR}/init-git
 
 RUN mkdir -p /home/user/.config/jumpstarter/clients/ && \
-    chmod +x ${INIT_SCRIPTS_DIR}/*
-
-# create symbolic links from /home/workspace/ -> /home/user/
-RUN stow . -t /home/user/ -d /home/workspace/ --no-folding
-
-# set permissions on the user's home directory
-RUN chown -R 10001:0 /home/workspace /home/user && \
+    chmod +x ${INIT_SCRIPTS_DIR}/* && \
+    stow . -t /home/user/ -d /home/workspace/ --no-folding && \
+    chown -R 10001:0 /home/workspace /home/user && \
     chmod -R g=u /home/user /home/workspace
 
 USER 10001
