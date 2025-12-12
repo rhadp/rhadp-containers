@@ -1,0 +1,19 @@
+name: build the codespaces container image
+on:
+  workflow_dispatch:
+
+  #push:
+  #  branches:
+  #    - 'develop'
+
+jobs:
+  build-codespaces-container:
+    uses: ./.github/workflows/build-container.yaml
+    with:
+      container_name: codespaces
+    secrets: inherit
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+      attestations: write
