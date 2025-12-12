@@ -1,4 +1,5 @@
 ansible
+boto3
 azure-cli
 kubernetes
 PyGithub
@@ -8,6 +9,6 @@ requests
 google-auth
 google-cloud-compute
 google-auth-oauthlib
+pylint
 awscli
-boto3>=1.28.0
 pyyaml

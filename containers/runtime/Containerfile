@@ -3,17 +3,8 @@ FROM ghcr.io/rhadp/base:latest
 ARG TARGETARCH
 USER root
 
-ENV CENTOS_RELEASE=9.0-30
-RUN if [ "$TARGETARCH" = "arm64" ]; then \
-        dnf install -y --setopt=tsflags=nodocs \
-        https://mirror.stream.centos.org/9-stream/BaseOS/aarch64/os/Packages/centos-stream-repos-${CENTOS_RELEASE}.el9.noarch.rpm \
-        https://mirror.stream.centos.org/9-stream/BaseOS/aarch64/os/Packages/centos-gpg-keys-${CENTOS_RELEASE}.el9.noarch.rpm; \
-    else \
-        dnf install -y --setopt=tsflags=nodocs \
-        https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/Packages/centos-stream-repos-${CENTOS_RELEASE}.el9.noarch.rpm \
-        https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-${CENTOS_RELEASE}.el9.noarch.rpm; \
-    fi && \
-    dnf install -y --setopt=tsflags=nodocs \
+# install virtualization packages
+RUN dnf install -y --setopt=tsflags=nodocs \
     python3-libgpiod nss_wrapper \
     qemu-kvm qemu-img libvirt \
     "@virtualization-hypervisor" "@virtualization-client" "@virtualization-platform" "@virtualization-tools" \
@@ -24,7 +15,7 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
 
 # install jumpstarter and other python dependencies
 COPY requirements.txt /tmp/requirements.txt
-RUN uv pip install "git+https://github.com/jumpstarter-dev/jumpstarter#subdirectory=packages/jumpstarter-all" && \
+RUN uv pip install "git+https://github.com/rhadp/jumpstarter@develop#subdirectory=packages/jumpstarter-all" && \
     uv pip install -r /tmp/requirements.txt && \
     rm -rf /tmp/requirements.txt
 
