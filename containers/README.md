@@ -23,10 +23,10 @@ Base image with Python 3.12, uv, OpenShift CLI, and essential tools.
 Adds development tools: Podman, C/C++ toolchain (gcc, clang, llvm), and Rust.
 
 ### runtime
-Adds virtualization packages (QEMU, KVM, libvirt) and Jumpstarter for pipeline automation.
+Adds virtualization packages (QEMU, KVM, libvirt) and Jumpstarter for hardware automation.
 
 ### codespaces
-Development environment based on builder with Jumpstarter and Git initialization scripts.
+Development environment with Jumpstarter, Ansible, and cloud SDKs (AWS, Azure, GCP).
 
 ### pipeline
-CI/CD image based on runtime with additional Python dependencies and S3 upload utilities.
+CI/CD image with Jumpstarter, cloud SDKs, and S3 upload utilities.
